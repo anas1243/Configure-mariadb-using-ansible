@@ -1,0 +1,7 @@
+---
+- name: Configure mariadb
+  hosts: dbservers
+  vars_files:
+    - secrets.yaml
+  roles:
+    - mariadb-role
