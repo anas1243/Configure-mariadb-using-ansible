@@ -1,2 +1,13 @@
 ---
 # handlers file for roles/mariadb-role
+
+- name: Restart mariadb.service
+  ansible.builtin.service:
+    name: mariadb.service
+    state: restarted
+
+- name: Set Mariadb username and password
+  community.mysql.mysql_user:
+    name: "{{ username }}"
+    password: "{{ password }}"
+    state: present

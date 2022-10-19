@@ -1,4 +1,35 @@
 ---
 # tasks file for roles/mariadb-role
----
-- name
+- name: Install pip in the remote
+  ansible.builtin.yum:
+    name:
+      - python3-pip
+    state: present
+    update_cache: true
+
+- name: Install pymysqldb in the remote
+  ansible.builtin.pip:
+    name: PyMySQL
+    state: present
+
+- name: Install mariadb
+  ansible.builtin.yum:
+    name: mariadb-server
+    state: present
+  notify:
+    - Set Mariadb username and password
+
+- name: Enable and start mariadb service
+  ansible.builtin.service:
+    name: mariadb.service
+    state: started
+    enabled: true
+
+- name: Install configuration file
+  ansible.builtin.get_url:
+    url: https://drive.google.com/uc?export=download&id=1QIeumZzk1_PL6pVf699ff8iurEnuwk7y
+    dest: /var/lib/mysql
+    mode: 0644
+    force: true
+  notify:
+    - Restart mariadb.service
